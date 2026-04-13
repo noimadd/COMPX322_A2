@@ -90,4 +90,9 @@ class Widget {
         this.container.appendChild(this.element);
     }
 
+    attachEventListeners() {
+        this.element.querySelector('.widget-close-btn').addEventListener('click', () => {
+            this.element.remove();
+        });
+    }
 }
