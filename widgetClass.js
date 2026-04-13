@@ -94,7 +94,7 @@ class Widget {
         this.dataSelect.addEventListener('change', () => this.fetchData());
         this.countrySelect.addEventListener('change', () => this.fetchData());
 
-        this.chartSelect.addEventListener('change', () => { if (this.apiData) this.updateChart(); });
+        this.chartSelect.addEventListener('change', () => { if (this.apiData) this.renderChart(); });
 
         this.element.querySelector('.widget-close-btn').addEventListener('click', () => {
             this.element.remove();
@@ -102,10 +102,14 @@ class Widget {
     }
 
     async fetchData() {
-        const COUNTRY = this.countrySelect.value;
-        const dataLabel = this.dataSelect.value;
+        this.country = this.countrySelect.value;
+        this.dataLabel = this.dataSelect.value;
+        const COUNTRY = this.country;
+        const dataLabel = this.dataLabel;
 
         console.log(`Fetching data for ${COUNTRY} - ${dataLabel}`);
+
+        this.titleElement.textContent = `${dataLabel || 'Data'} - ${COUNTRY || 'Country'}`;
 
         if (!COUNTRY || !dataLabel) return;
 
@@ -123,17 +127,62 @@ class Widget {
 
             const historical = data.historical_population;
             const forecast = data.population_forecast;
-
-            this.apiData = {
-                historical: historical.map(entry => ({ year: entry.year, value: entry[DATA_OPTIONS[dataLabel]] })),
-                forecast: forecast.map(entry => ({ year: entry.year, value: entry[DATA_OPTIONS[dataLabel]] }))
-            };
+            
+            this.apiData = [...historical, ...forecast];
 
             console.log(this.apiData);
+
+            this.renderChart();
         } catch (error) {
             console.error('Error fetching data:', error);
             alert('Failed to fetch data. Please check the console for details.');
             return;
         }
+    }
+
+    renderChart() {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
+        const chartType = this.chartSelect.value.toLowerCase() || 'bar';
+        const key = DATA_OPTIONS[this.dataLabel];
+
+        const data = [...this.apiData].sort((a, b) => a.year - b.year);
+
+        this.chart = new Chart(this.chartElement, {
+            type: chartType,
+            data: {
+                labels: data.map(entry => entry.year),
+                datasets: [
+                    {
+                        label: 'Population',
+                        data: data.map(entry => entry[key]),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        fill: chartType === 'line' ? false : true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: this.dataLabel
+                        }
+                    }
+                }
+            }
+        });
     }
 }
