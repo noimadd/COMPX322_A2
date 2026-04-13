@@ -24,7 +24,31 @@
 
         <main>
             <section id="dashboard" class="dashboard" aria-label="population dashboard">
-
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title">No Data Selected</h3>
+                        <button class="widget-close-btn" aria-label="close widget">
+                            ✕
+                        </button>
+                    </div>
+                    <div class="widget-controls">
+                        <div class="data-select widget-control">
+                            <label class="control-label" for="data-select">DATA</label>
+                            <select name="data-select" id="data-select"></select>
+                        </div>
+                        <div class="country-select widget-control">
+                            <label class="control-label" for="country-select">COUNTRY</label>
+                            <select name="country-select" id="country-select"></select>
+                        </div>
+                        <div class="chart-select widget-control">
+                            <label class="control-label" for="chart-select">CHART TYPE</label>
+                            <select name="chart-select" id="chart-select"></select>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <canvas class="widget-chart" aria-label="population data chart"></canvas>
+                    </div>
+                </div>
             </section>
         </main>
 
