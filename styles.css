@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -89,6 +90,10 @@ body {
     transform: scale(0.97);
 }
 
+
+
+
+/* main content styling */
 main {
     flex: 1;
     max-width: 1550px;
@@ -96,6 +101,9 @@ main {
     margin: 0 auto;
 }
 
+
+
+/* widget container */
 .dashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));

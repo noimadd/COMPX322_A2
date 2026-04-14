@@ -135,7 +135,6 @@ class Widget {
             this.renderChart();
         } catch (error) {
             console.error('Error fetching data:', error);
-            alert('Failed to fetch data. Please check the console for details.');
             return;
         }
     }
@@ -156,7 +155,7 @@ class Widget {
                 labels: data.map(entry => entry.year),
                 datasets: [
                     {
-                        label: 'Population',
+                        label: this.dataLabel,
                         data: data.map(entry => entry[key]),
                         backgroundColor: 'rgba(54, 162, 235, 0.5)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -168,20 +167,60 @@ class Widget {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Year'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: this.dataLabel
+                ...(chartType === 'radar' ? {
+                    scales: {
+                        r: {
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: 'oklch(0.9212 0.0093 264.06/0.8)'
+                            },
+                            pointLabels: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.7)'
+                            },
+                            angleLines: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.7)'
+                            },
+                            grid: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.7)'
+                            }
                         }
                     }
-                }
+                } : {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Year',
+                                color: 'oklch(0.9212 0.0093 264.06/0.7)'
+                            },
+                            ticks: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.8)'
+                            },
+                            grid: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.2)'
+                            },
+                            border: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.1)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: this.dataLabel,
+                                color: 'oklch(0.9212 0.0093 264.06/0.7)'
+                            },
+                            ticks: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.8)'
+                            },
+                            grid: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.2)'
+                            },
+                            border: {
+                                color: 'oklch(0.9212 0.0093 264.06/0.1)'
+                            }
+                        }
+                    }
+                })
             }
         });
     }
