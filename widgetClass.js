@@ -154,6 +154,7 @@ class Widget {
             this.renderChart(); // renders chart with new data
         } catch (error) {
             console.error('Error fetching data:', error);
+            this.titleElement.textContent = "Error Fetching Data - Please Try Again";
             return;
         }
     }
